@@ -1,0 +1,21 @@
+docker build -t whisper-fastapi .
+
+
+
+docker run --gpus all \
+  -p 8080:8080 \
+  -v ~/.cache/huggingface:/root/.cache/huggingface \
+  -e HUGGING_FACE_HUB_TOKEN=hf_YWAymmnG********\
+  whisper-fastapi
+
+
+curl -X GET http://localhost:8080/ping
+# Expected output: {"status":"healthy"}
+
+
+
+
+curl -X POST http://localhost:8080/invocations \
+  -H "Content-Type: audio/mpeg" \
+  --data-binary @bedrock.mp3
+
